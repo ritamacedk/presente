@@ -1,0 +1,15 @@
+name: projetor ameingas
+
+on:
+  push:
+
+jobs:
+  teste:
+      runs-on: ubuntu-22.04
+
+      steps:
+        - name:  Baixar código
+          uses:  actions/checkout@v4
+
+        - name: Executar teste
+          run: echo "Pipeline funcionando"
