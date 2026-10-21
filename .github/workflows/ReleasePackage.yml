@@ -1,0 +1,36 @@
+
+name: Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versao da release (ex: v1.0.0)"
+        required: true
+        default: "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+
+      - name: Criar pacote ZIP
+        run: |
+          zip -r release-package.zip . \
+            -x ".git/*" \
+               ".github/*" \
+               "release-package.zip"
+
+      - name: Publicar Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
+          generate_release_notes: true
+          files: release-package.zip
