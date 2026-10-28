@@ -1,0 +1,64 @@
+
+name: Atualizar Changelog
+
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/changelog.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Registrar ultimas alteracoes
+        run: |
+          git log -10 --date=short \
+            --pretty=format:"- %ad | %an | %s" \
+            --invert-grep \
+            --grep="docs: atualizar changelog" \
+            > changelog.tmp
+
+          awk '
+            /<!-- CHANGELOG:START -->/ {
+              print
+              while ((getline line < "changelog.tmp") > 0)
+                print line
+              close("changelog.tmp")
+              inside=1
+              next
+            }
+            /<!-- CHANGELOG:END -->/ {
+              inside=0
+              print
+              next
+            }
+            !inside { print }
+          ' README.md > README.new
+
+          mv README.new README.md
+          rm changelog.tmp
+
+      - name: Salvar README atualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: atualizar changelog"
+            git push
+          else
+            echo "Nenhuma alteracao no README."
+          fi
