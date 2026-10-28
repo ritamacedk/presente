@@ -14,7 +14,13 @@ A Action consulta as mensagens dos commits e registra as ultimas
 alteracoes diretamente nesta secao do README.md.
 
 <!-- CHANGELOG:START -->
-Ainda nao ha alteracoes registradas.
+- 2026-10-28 | ritar | Update README.md
+- 2026-10-28 | ritar | Update and rename changelogtete.yml to changelog.yml
+- 2026-10-21 | ritar | Create ReleasePackage.yml
+- 2026-10-15 | ritar | Create changelogtete.yml
+- 2026-10-15 | ritar | Create amengas2.yml
+- 2026-10-15 | ritar | Create ameingas.yml
+- 2026-10-15 | ritar | Initial commit
 <!-- CHANGELOG:END -->
 
 ## Action de Release
